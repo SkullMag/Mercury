@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="18154" systemVersion="20E241" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="Collection" representedClassName="Collection" syncable="YES" codeGenerationType="class">
+        <attribute name="hexColor" optional="YES" attributeType="String" customClassName="CGColor"/>
+        <attribute name="id" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+    </entity>
+    <entity name="Word" representedClassName="Word" syncable="YES" codeGenerationType="class">
+        <attribute name="attributes" optional="YES" attributeType="Transformable" customClassName="NSAttributedString"/>
+        <attribute name="collectionID" optional="YES" attributeType="String" customClassName="NSManagedObjectID"/>
+        <attribute name="word" optional="YES" attributeType="String"/>
+    </entity>
+    <elements>
+        <element name="Collection" positionX="-54" positionY="18" width="128" height="74"/>
+        <element name="Word" positionX="-217.0703125" positionY="-39.78125" width="128" height="74"/>
+    </elements>
+</model>
