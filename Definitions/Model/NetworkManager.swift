@@ -10,7 +10,7 @@ import UIKit
 
 
 protocol NetworkManagerDelegate {
-    func didRaiseError(error: Error)
+    func didRaiseError()
 }
 
 typealias CompletionHandler = (_ word: DictionaryWord) -> Void
@@ -32,7 +32,7 @@ struct NetworkManager {
     private func perform(request: URLRequest, word: String, completionHandler: @escaping CompletionHandler) {
         URLSession.shared.dataTask(with: request) {data, response, error in
             if error != nil {
-                delegate?.didRaiseError(error: error!)
+                delegate?.didRaiseError()
                 return
             }
             let jsonData = try? JSONSerialization.jsonObject(with: data!, options: [])
@@ -56,6 +56,8 @@ struct NetworkManager {
                         completionHandler(createWord(word: word, attributes: attributes))
                     }
                 }
+            } else {
+                delegate?.didRaiseError()
             }
             
         }.resume()
