@@ -101,26 +101,8 @@ class CollectionPickerViewController: UITableViewController {
             print(error)
         }
         
-        
         tableView.deselectRow(at: indexPath, animated: true)
         self.navigationItem.rightBarButtonItem?.isEnabled = true
     }
 
 }
-
-
-//extension CollectionPickerViewController: UITableViewDelegate {
-//
-//}
-//
-//extension CollectionPickerViewController: UITableViewDataSource {
-//    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        return 1
-//    }
-//
-//    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        <#code#>
-//    }
-//
-//
-//}
