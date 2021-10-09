@@ -6,3 +6,9 @@
 //
 
 import Foundation
+
+
+public struct DictionaryWord {
+    var word: String
+    var attributes: NSAttributedString
+}
