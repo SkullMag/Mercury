@@ -34,4 +34,4 @@ Thanks to https://github.com/meetDeveloper/freeDictionaryAPI for providing a fre
 
 ## TODO
 * Ability to share collections
-* Group words in sections by first character (<a href="https://github.com/SkullMag/Mercury/blob/main/Definitions/Controller/CollectionsViewController.swift">CollectionsViewController</a>)
+* Group words in sections by first character (<a href="https://github.com/SkullMag/Mercury/blob/main/Definitions/Controller/WordsViewController.swift">WordsViewController</a>)
