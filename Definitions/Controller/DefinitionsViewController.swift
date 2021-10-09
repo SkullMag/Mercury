@@ -44,6 +44,8 @@ class DefinitionsViewController: UIViewController {
     
     func displayError() {
         DispatchQueue.main.async {
+            self.pronounceButton.isHidden = true
+            self.addToFavouritesButton.isHidden = true
             self.wordLabel.text = self.searchField.text
             self.definitionTextView.text = ""
             let string = NSMutableAttributedString()
@@ -130,7 +132,7 @@ extension DefinitionsViewController: UISearchBarDelegate {
 }
 
 extension DefinitionsViewController: NetworkManagerDelegate {
-    func didRaiseError(error: Error) {
+    func didRaiseError() {
         self.displayError()
     }
     
