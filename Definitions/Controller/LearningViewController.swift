@@ -14,6 +14,7 @@ class LearningViewController: UIViewController {
     @IBOutlet var forgotButton: UIButton!
     @IBOutlet var rememberButton: UIButton!
     @IBOutlet var wordCountLabel: UILabel!
+    @IBOutlet weak var showDefinitionButton: UIButton!
     
     var wordNumber = 0
     var words: Array<Word>!
@@ -29,7 +30,7 @@ class LearningViewController: UIViewController {
         self.definitionTextView.isEditable = false
         
         // self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "Back", style: .plain, target: nil, action: #selector(dismissController))
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(dismissController))
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(dismissController))
         
         numberOfWords = words.count
         
@@ -83,7 +84,15 @@ class LearningViewController: UIViewController {
     }
     
     @IBAction func showDefinition(_ sender: UIButton) {
-        self.definitionTextView.attributedText = currentWord!.attributes
+        if let curentText = showDefinitionButton.titleLabel?.text {
+            if curentText == "Show the definition" {
+                showDefinitionButton.setTitle("Hide the definition", for: .normal)
+                self.definitionTextView.attributedText = currentWord!.attributes
+            } else {
+                showDefinitionButton.setTitle("Show the definition", for: .normal)
+                self.definitionTextView.attributedText = NSAttributedString(string: "")
+            }
+        }
     }
 
 }
