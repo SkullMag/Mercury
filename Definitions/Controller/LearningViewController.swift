@@ -40,10 +40,6 @@ class LearningViewController: UIViewController {
         self.forgotButton.clipsToBounds = true
         
         nextWord()
-//        self.wordCountLabel.text = String(self.wordNumber) + "/" + String(numberOfWords)
-//        self.wordLabel.text = words.remove(at: 0).word?.capitalized
-
-        // Do any additional setup after loading the view.
     }
     
     @objc func dismissController() {

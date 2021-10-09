@@ -22,9 +22,6 @@ class WordViewController: UIViewController {
         self.definitionTextView.isEditable = false
         
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "volume.2.fill"), style: .plain, target: self, action: #selector(pronounce))
-        // self.navigationItem.rightBarButtonItem = UIBarButtonItem(systemItem: .play)
-
-        // Do any additional setup after loading the view.
     }
     
     @objc func pronounce() {

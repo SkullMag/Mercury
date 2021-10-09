@@ -100,21 +100,6 @@ extension CollectionsViewController: UITableViewDataSource {
         
         content.secondaryTextProperties.font = UIFont.preferredFont(forTextStyle: .footnote)
         content.secondaryTextProperties.color = UIColor.gray
-//        if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
-//            let context = appDelegate.persistentContainer.viewContext
-//            let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Word")
-//            do {
-//                let words = try context.fetch(fetchRequest)
-//                for word in words {
-//                    print(word.value(forKey: "collectionID"))
-//                    if word.value(forKey: "collectionID") as! NSManagedObjectID == collection.objectID {
-//                        print(1)
-//                    }
-//                }
-//            } catch {
-//                print(error)
-//            }
-//        }
         content.secondaryText = String(collection.words!.count) + " words"
         
         cell.contentConfiguration = content
