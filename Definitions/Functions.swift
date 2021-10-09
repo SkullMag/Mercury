@@ -9,7 +9,7 @@ import Foundation
 import AVKit
 
 
-func pronounceWord(word: String) {
+public func pronounceWord(word: String) {
     let synthesizer = AVSpeechSynthesizer()
     let utterance = AVSpeechUtterance(string: word)
     utterance.voice = AVSpeechSynthesisVoice(language: "en-EN")
@@ -17,7 +17,7 @@ func pronounceWord(word: String) {
 }
 
 
-func create(word: String, attributes: Dictionary<String, (String, String?)>) -> Word {
+public func createWord(word: String, attributes: Dictionary<String, (String, String?)>) -> DictionaryWord {
     let attributesString = NSMutableAttributedString()
     for (key, (line, example)) in attributes {
         let boldAttrs = [NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .headline),
@@ -32,8 +32,18 @@ func create(word: String, attributes: Dictionary<String, (String, String?)>) -> 
         }
         attributesString.append(NSAttributedString(string: "\n\n", attributes: regularAtts))
     }
-    let wordToReturn = Word()
-    wordToReturn.word = word
-    wordToReturn.attributes = attributesString
+    var wordToReturn = DictionaryWord(word: word, attributes: attributesString)
     return wordToReturn
+}
+
+
+public func addBoldText(fullString: String, boldPartOfString: String, baseFont: UIFont, boldFont: UIFont) -> NSAttributedString {
+    let baseFontAttribute = [NSAttributedString.Key.font : baseFont]
+    let boldFontAttribute = [NSAttributedString.Key.font : boldFont]
+
+    let attributedString = NSMutableAttributedString(string: fullString, attributes: baseFontAttribute)
+
+    attributedString.addAttributes(boldFontAttribute, range: NSRange(fullString.range(of: boldPartOfString) ?? fullString.startIndex..<fullString.endIndex, in: fullString))
+
+    return attributedString
 }
