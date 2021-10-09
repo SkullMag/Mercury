@@ -29,5 +29,8 @@ where I store all new words that I find while reading the book.
 I find learning words with flashcards really productive, so I decided to implement the same technique here. In the learning section you mark words, 
 that are presented randomly from the chosen collection, with "I remember" and "I forgot" buttons. At the end you get your result.
 
+## Thanks
+Thanks to https://github.com/meetDeveloper/freeDictionaryAPI for providing a free dictionary API
+
 ## TODO
 * Ability to share collections
