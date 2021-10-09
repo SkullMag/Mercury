@@ -20,6 +20,7 @@ class DefinitionsViewController: UIViewController {
     
     var context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     let activityIndicator = UIActivityIndicatorView(style: .medium)
+    var networkManager = NetworkManager()
     
     //var container: NSPersistentContainer!
     
@@ -36,10 +37,12 @@ class DefinitionsViewController: UIViewController {
         self.addToFavouritesButton.isHidden = true
         self.pronounceButton.isHidden = true
         
+        networkManager.delegate = self
+        
         self.searchField.delegate = self
     }
     
-    func display_error() {
+    func displayError() {
         DispatchQueue.main.async {
             self.wordLabel.text = self.searchField.text
             self.definitionTextView.text = ""
@@ -47,6 +50,16 @@ class DefinitionsViewController: UIViewController {
             string.append(NSAttributedString(string: "Try another word", attributes: [NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .headline), NSAttributedString.Key.foregroundColor: UIColor.systemGreen]))
             self.definitionTextView.attributedText = string
             self.activityIndicator.stopAnimating()
+        }
+    }
+    
+    func show(word: DictionaryWord) {
+        DispatchQueue.main.async {
+            self.wordLabel.text = word.word
+            self.definitionTextView.attributedText = word.attributes
+            self.activityIndicator.stopAnimating()
+            self.addToFavouritesButton.isHidden = false
+            self.pronounceButton.isHidden = false
         }
     }
     
@@ -74,83 +87,31 @@ class DefinitionsViewController: UIViewController {
         searchField.endEditing(true)
         self.addToFavouritesButton.isSelected = false
         self.definitionTextView.flashScrollIndicators()
-        if let word = searchField.text {
-            let fetchRequest = NSFetchRequest<Word>(entityName: "Word")
-            fetchRequest.predicate = NSPredicate(format: "word == %@", word.lowercased())
-            do {
-                let result = try context.fetch(fetchRequest)
-                if result.count != 0 {
-                    self.wordLabel.text = result.first!.word!.capitalized
-                    self.definitionTextView.attributedText = result.first!.attributes
-                    self.addToFavouritesButton.isHidden = false
-                    self.pronounceButton.isHidden = false
-                    self.activityIndicator.stopAnimating()
-                    return
-                }
-            } catch {
-                print(error)
-            }
-            if word == self.wordLabel.text {
-                self.activityIndicator.stopAnimating()
-                return
-            }
-            var URLString: String = "https://api.dictionaryapi.dev/api/v2/entries/en/" + word
-            URLString = URLString.replacingOccurrences(of: " ", with: "%20")
-            let url = URL(string: URLString)
-        
-            if let url = url {
-                let searchedWord = self.searchField.text
-                URLSession.shared.dataTask(with: url) { data, response, error in
-                    guard let data = data, error == nil else {
-                        print("smth went wrong while request")
-                        DispatchQueue.main.async {
-                            self.activityIndicator.stopAnimating()
-                        }
-                        return
-                    }
-                    let jsonData = try? JSONSerialization.jsonObject(with: data, options: [])
-                    if let jsonData = jsonData as? Array<Dictionary<String, Any>>{
-                        //var result: Array<String> = []
-                        var result = Dictionary<String, (String, String?)>()
-                        for word in jsonData {
-                            let meanings = word["meanings"] as? Array<Dictionary<String, Any>>
-                            if searchedWord!.lowercased() == word["word"] as? String {
-                                for meaning in meanings! {
-                                    var partOfSpeech = meaning["partOfSpeech"] as? String
-                                    let definitions = meaning["definitions"] as? Array<Dictionary<String, Any>>
-                                    let definition = definitions?[0]["definition"] as! String
-                                    let example = definitions?[0]["example"] as? String
-                                    if partOfSpeech == nil {
-                                        partOfSpeech = "Phrase"
-                                    }
-                                    if result[partOfSpeech!] == nil {
-                                        result[partOfSpeech!] = (definition, example)
-                                    }
-                                }
-                            }
-                        }
-                        
-                        DispatchQueue.main.async {
-                            self.definitionTextView.text = ""
-                            
-                            if self.definitionTextView.text.isEmpty {
-                                self.display_error()
-                            } else {
-                                self.addToFavouritesButton.isHidden = false
-                                self.pronounceButton.isHidden = false
-                            }
-                            self.wordLabel.text = self.searchField.text
-                        }
-                    } else {
-                        self.display_error()
-                    }
-                }.resume()
-            } else {
-                self.display_error()
-            }
-        } else {
-            print("type smth in")
+
+        let fetchRequest = NSFetchRequest<Word>(entityName: "Word")
+        guard let word = searchField.text else { return }
+        fetchRequest.predicate = NSPredicate(format: "word == %@", word.lowercased())
+        guard let result = try? context.fetch(fetchRequest) else {
+            displayError()
+            return
         }
+        if result.count != 0 {
+            self.wordLabel.text = result.first!.word!.capitalized
+            self.definitionTextView.attributedText = result.first!.attributes
+            self.addToFavouritesButton.isHidden = false
+            self.pronounceButton.isHidden = false
+            self.activityIndicator.stopAnimating()
+            return
+        }
+            
+        if word == self.wordLabel.text {
+            self.activityIndicator.stopAnimating()
+            return
+        }
+        networkManager.get(word: word) { dictionaryWord in
+            self.show(word: dictionaryWord)
+        }
+            
     }
     
 }
@@ -168,14 +129,9 @@ extension DefinitionsViewController: UISearchBarDelegate {
     }
 }
 
-
-func addBoldText(fullString: String, boldPartOfString: String, baseFont: UIFont, boldFont: UIFont) -> NSAttributedString {
-    let baseFontAttribute = [NSAttributedString.Key.font : baseFont]
-    let boldFontAttribute = [NSAttributedString.Key.font : boldFont]
-
-    let attributedString = NSMutableAttributedString(string: fullString, attributes: baseFontAttribute)
-
-    attributedString.addAttributes(boldFontAttribute, range: NSRange(fullString.range(of: boldPartOfString) ?? fullString.startIndex..<fullString.endIndex, in: fullString))
-
-    return attributedString
+extension DefinitionsViewController: NetworkManagerDelegate {
+    func didRaiseError(error: Error) {
+        self.displayError()
+    }
+    
 }
