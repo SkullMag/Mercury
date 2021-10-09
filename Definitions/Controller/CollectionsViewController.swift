@@ -71,17 +71,6 @@ extension CollectionsViewController: UITableViewDelegate {
 
 extension CollectionsViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
-        if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
-            let context = appDelegate.persistentContainer.viewContext
-            let fetchRequest = NSFetchRequest<Collection>(entityName: "Collection")
-            do {
-                collections = try context.fetch(fetchRequest)
-            } catch {
-                print(error)
-            }
-        }
-        
         return collections.count
     }
     
