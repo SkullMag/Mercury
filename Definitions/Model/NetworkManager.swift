@@ -13,7 +13,7 @@ protocol NetworkManagerDelegate {
     func didRaiseError(error: Error)
 }
 
-typealias CompletionHandler = (_ word: Word) -> Void
+typealias CompletionHandler = (_ word: DictionaryWord) -> Void
 
 
 struct NetworkManager {
@@ -53,11 +53,11 @@ struct NetworkManager {
                                 attributes[partOfSpeech!] = (definition, example)
                             }
                         }
-                        completionHandler(Definitions.create(word: word, attributes: attributes))
+                        completionHandler(createWord(word: word, attributes: attributes))
                     }
                 }
             }
             
-        }
+        }.resume()
     }
 }
