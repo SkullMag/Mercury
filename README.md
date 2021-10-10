@@ -30,7 +30,7 @@ I find learning words with flashcards really productive, so I decided to impleme
 that are presented randomly from the chosen collection, with "I remember" and "I forgot" buttons. At the end you get your result.
 
 ## Thanks
-Thanks to https://github.com/meetDeveloper/freeDictionaryAPI for providing a free dictionary API
+Thanks to https://github.com/meetDeveloper/freeDictionaryAPI
 
 ## TODO
 * Ability to share collections
