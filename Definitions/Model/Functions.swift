@@ -32,8 +32,7 @@ public func createWord(word: String, attributes: Dictionary<String, (String, Str
         }
         attributesString.append(NSAttributedString(string: "\n\n", attributes: regularAtts))
     }
-    var wordToReturn = DictionaryWord(word: word, attributes: attributesString)
-    return wordToReturn
+    return DictionaryWord(word: word, attributes: attributesString)
 }
 
 
