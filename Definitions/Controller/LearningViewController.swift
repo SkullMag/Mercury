@@ -84,8 +84,8 @@ class LearningViewController: UIViewController {
     }
     
     @IBAction func showDefinition(_ sender: UIButton) {
-        if let curentText = showDefinitionButton.titleLabel?.text {
-            if curentText == "Show the definition" {
+        if let currentText = showDefinitionButton.titleLabel?.text {
+            if currentText == "Show the definition" {
                 showDefinitionButton.setTitle("Hide the definition", for: .normal)
                 self.definitionTextView.attributedText = currentWord!.attributes
             } else {
